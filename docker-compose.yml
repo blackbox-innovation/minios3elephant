@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  minio:
+    image: minio/minio
+    volumes:
+      - minio_data:/data
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=password
+    command: server --console-address ":9001" /data
+    ports:
+      - 9000:9000
+      - 9001:9001
+  backup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - AWS_ACCESS_KEY_ID=<your-aws-access-key>
+      - AWS_SECRET_ACCESS_KEY=<your-aws-secret-key>
+      - AWS_REGION=<your-aws-region>
+      - MINIO_URL="http=/minio=000"
+      - MINIO_ACCESS_KEY=<your-minio-access-key>
+      - MINIO_SECRET_KEY=<your-minio-secret-key>
+      - S3_BUCKET_NAME=<your-s3-bucket-name>
+      - SCHEDULE="<cron-schedule>"
+      - SLACK_WEBHOOK_URL="<your-slack-webhook-url>"
+      - GPG_PASSPHRASE="<your-gpg-passphrase>"
+      - BACKUP_KEEP_DAYS=<number of days to keep backups>
+    depends_on:
+      - minio
+
+volumes:
+  minio_data:
