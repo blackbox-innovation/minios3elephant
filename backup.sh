@@ -15,10 +15,11 @@ mc alias set minio $MINIO_URL $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
 
 echo "Minio client configured"
 
-# List all buckets
-buckets=$(mc ls minio --json | jq -r .key | sed 's/\/$//')
+# Get the bucket list from the environment variable
+IFS=',' read -ra buckets <<< "$BUCKET_LIST"
 
-for bucket in $buckets; do
+
+for bucket in "${buckets[@]}"; do
     timestamp=$(date +"%Y-%m-%dT%H:%M:%S")
     
     # Download bucket

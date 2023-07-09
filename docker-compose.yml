@@ -27,7 +27,8 @@ services:
       - SCHEDULE="<cron-schedule>"
       - SLACK_WEBHOOK_URL="<your-slack-webhook-url>"
       - GPG_PASSPHRASE="<your-gpg-passphrase>"
-      - BACKUP_KEEP_DAYS=<number of days to keep backups>
+      - BACKUP_KEEP_DAYS="<number of days to keep backups>"
+      - BUCKET_LIST="<comma-separated-minio-bucket-names>"
     depends_on:
       - minio
 

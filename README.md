@@ -42,6 +42,7 @@ MinioS3Elephant is a streamlined, Docker-oriented tool committed to ensuring the
           MINIO_SECRET_KEY: <your-minio-secret-key>
           S3_BUCKET_NAME: <your-s3-bucket-name>
           SCHEDULE: "<cron-schedule>"
+          BUCKET_LIST: "<comma-separated-minio-bucket-names>"
           SLACK_WEBHOOK_URL: "<your-slack-webhook-url>"
           GPG_PASSPHRASE: "<your-gpg-passphrase>"
           BACKUP_KEEP_DAYS: <number of days to keep backups>
@@ -49,7 +50,7 @@ MinioS3Elephant is a streamlined, Docker-oriented tool committed to ensuring the
       data:
     ```
 
-Remember to replace `<...>` placeholders with your actual values. The `MINIO_URL` environment variable is set to `http://minio:9000` because `minio` is the name of the Minio service in the Docker Compose file and Docker provides automatic service discovery using the service name as the hostname.
+Remember to replace `<...>` placeholders with your actual values. The `MINIO_URL` environment variable is set to `http://minio:9000` because `minio` is the name of the Minio service in the Docker Compose file and Docker provides automatic service discovery using the service name as the hostname. BUCKET_LIST should be a comma-separated list of the names of the Minio buckets that you want to backup.
 
 ### 🔒 How to descrypt the data
 
@@ -78,7 +79,7 @@ This will start two Docker containers: one for the MinIO service and another for
 
 The MinIO service starts a MinIO server listening on the default port of 9000 and mounts a named volume `minio_data` at `/data`. The `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` environment variables are set to `root` and `password` respectively.
 
-The backup service is built from the current directory (with the Dockerfile) and gets environment variables for AWS, MinIO, S3, Slack, GPG passphrase, and the schedule.
+The backup service is built from the current directory (with the Dockerfile) and gets environment variables for AWS, MinIO, S3, Slack, GPG passphrase, the schedule, and the bucket list.
 
 1.  You can access the MinIO web interface at <http://localhost:9000>. The access key is `root` and the secret key is `password`. Here you can manually create buckets and upload files for testing.
 
